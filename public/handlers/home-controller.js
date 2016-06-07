@@ -1,7 +1,7 @@
 angular.module("picsys")
     .controller("HomeController", function($scope, pictureService/*, $window*/) {
         $scope.message = "";
-
+ 
         $scope.pictures = [];
         $scope.filter = "";
 

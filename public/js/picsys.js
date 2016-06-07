@@ -18,4 +18,10 @@ angular.module("picsys", ["ngRoute","ngAnimate","PublicComponent","PublicResourc
 		});
 
 		$routeProvider.otherwise({redirectTo : "/"});
+
+        var webSocket = io();
+
+        webSocket.on("pictureSocket", function(data) {
+			angular.element(document.querySelector("#socketMessage")).text(data);
+        });
 	});
