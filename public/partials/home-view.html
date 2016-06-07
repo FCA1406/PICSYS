@@ -1,0 +1,33 @@
+<system-head>
+
+</system-head>
+<div class="container">
+    <p class="alert alert-info" ng-show="message.length">{{message}}</p>
+    <div class="row">
+        <div class="col-md-12">
+            <form name="findForm" novalidate>
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <a href="/new/picture" class="btn btn-primary">New Picture</a>
+                    </span>
+                    <input class="form-control" placeholder="or put your Picture Filter here!" ng-model="filter" ng-model-options="{debounce : 500}" />
+                </div>
+            </form>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="container">
+            <div class="col-md-12">
+                <div class="row">
+                    <picture-panel class="animate-panel col-sm-3 col-md-4 col-lg-2" ng-repeat="picture in pictures | orderBy : 'name' | filter : filter" picture="picture" editable="true" removable="remove(picture)">
+                        <img class="img-responsive center-block" src="{{picture.file}}" title="{{picture.file}}">
+                    </picture-panel>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<system-footer>
+
+</system-footer>
