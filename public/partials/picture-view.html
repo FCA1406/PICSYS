@@ -7,14 +7,24 @@
         <div class="col-md-6">
             <form name="pictureForm" novalidate ng-submit="save()">
                 <div class="form-group">
-                    <label>Name:</label>
-                    <input class="form-control" name="name" ng-model="picture.name" required />
-                    <span class="form-control alert-danger" ng-show="pictureForm.$submitted && pictureForm.title.$error.required">Title Required!</span>
+                    <fieldset ng-disabled="picture._id.length">
+                        <label>File:</label>
+                        <div class="input-group">
+                            <span class="input-group-btn">
+                                <label class="btn btn-info" title="Upload">
+                                    <input type="file" name="upload" ng-change="picture.file=archive.upload.name" ngf-select ng-model="archive.upload" ngf-pattern="'image/*'" accept="image/*" ngf-max-size="4MB" />
+                                    <i class="glyphicon glyphicon-cloud-upload"></i>
+                                </label>
+                            </span>
+                            <input class="form-control" name="file" ng-model="picture.file" ng-readonly="true" required />
+                        </div>
+                        <span class="form-control alert-danger" ng-show="pictureForm.upload.$error.maxSize">Too Large! (MAX 4MB)</span>
+                    </fieldset>
                 </div>
                 <div class="form-group">
-                    <label>File:</label>
-                    <input class="form-control" name="file" ng-model="picture.file" required />
-                    <span class="form-control alert-danger" ng-show="pictureForm.$submitted && pictureForm.file.$error.required">File Required!</span>
+                    <label>Description:</label>
+                    <input class="form-control" name="description" ng-model="picture.description" ng-maxlength="240" />
+                    <span class="form-control alert-danger" ng-show="pictureForm.description.$error.maxlength">Too Large! (MAX 240)</span>
                 </div>
                 <button class="btn btn-success" type="submit" title="Save" ng-disabled="pictureForm.$invalid">
                     <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
@@ -27,11 +37,10 @@
         </div>
         <div class="container">
             <div class="col-md-6">
-                <div class="row">
-                    <picture-panel class="col-sm-12 col-md-12 col-lg-12" picture="picture" ng-show="pictureForm.$valid">
-                        <img class="img-responsive center-block" src="{{picture.file}}" title="{{picture.file}}">
-                    </picture-panel>
-                </div>
+                <picture-panel class="col-sm-12 col-md-12 col-lg-12" picture="picture" ng-show="pictureForm.$valid">
+                    <img class="img-responsive center-block" ng-show="archive.upload" ngf-thumbnail="archive.upload || ''">
+                    <img class="img-responsive center-block" ng-hide="archive.upload" src="/resources/upload/{{picture._id + '.' + picture.file.split('.').pop()}}" title="{{picture.description}}">
+                </picture-panel>
             </div>
         </div>
     </div>

@@ -20,8 +20,8 @@
         <div class="container">
             <div class="col-md-12">
                 <div class="row">
-                    <picture-panel class="animate-panel col-sm-3 col-md-4 col-lg-2" ng-repeat="picture in pictures | orderBy : 'name' | filter : filter" picture="picture" editable="true" removable="remove(picture)">
-                        <img class="img-responsive center-block" src="{{picture.file}}" title="{{picture.file}}">
+                    <picture-panel class="animate-panel col-sm-3 col-md-4 col-lg-2" ng-repeat="picture in pictures | orderBy : 'file' | filter : filter" picture="picture" editable="true" removable="remove(picture)">
+                        <img class="img-responsive center-block" src="/resources/upload/{{picture._id + '.' + picture.file.split('.').pop()}}" title="{{picture.description}}">
                     </picture-panel>
                 </div>
             </div>

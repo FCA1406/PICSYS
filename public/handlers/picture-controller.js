@@ -1,7 +1,8 @@
 angular.module("picsys")
-    .controller("PictureController", function($scope, pictureService, maintainPicture, $routeParams) {
+    .controller("PictureController", function($scope, pictureService, maintainPicture, archiveUpload, $routeParams) {
         $scope.message = "";
 
+        $scope.archive = {};
         $scope.picture = {};
 
         if ($routeParams._id) {
@@ -14,10 +15,21 @@ angular.module("picsys")
 
         $scope.save = function() {
             if ($scope.pictureForm.$valid) {
-                maintainPicture.maintain($scope.picture).then(function(data) {
-                    $scope.picture = data.picture;
-
+                maintainPicture.save($scope.archive, $scope.picture).then(function(data) {
                     $scope.message = data.message;
+
+                    if (data.method == "INSERT") {
+                        $scope.picture = data.picture;
+
+                        archiveUpload.save($scope.archive, $scope.picture).then(function(data) {
+                            $scope.message = $scope.message || data.message;
+                        }).catch(function(erro) {
+                            $scope.message = erro;
+                        });
+
+                        $scope.archive = {};
+                        $scope.picture = {};
+                    }
                 }).catch(function(erro) {
                     $scope.message = erro;
                 });

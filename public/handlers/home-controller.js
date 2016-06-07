@@ -17,7 +17,7 @@ angular.module("picsys")
                     var pictureIndex = $scope.pictures.indexOf(picture);
                     $scope.pictures.splice(pictureIndex, 1);
 
-                    $scope.message = picture.name + " was deleted!";
+                    $scope.message = picture.file + " Was Deleted!";
                 }, function(erro) {
                     $scope.message = erro;
                 });
