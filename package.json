@@ -1,0 +1,20 @@
+{
+  "name": "picsys",
+  "version": "0.0.0",
+  "description": "Picture System",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start" : "node server.js"
+  },
+  "author": "Fabiano Anjos",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.1",
+    "express": "^4.13.4",
+    "nedb": "^1.8.0"
+  },
+  "engines" : {
+    "node" : "4.2.1"
+  }
+}
