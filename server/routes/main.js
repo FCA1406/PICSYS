@@ -1,9 +1,9 @@
 var path = require("path");
 
-var archive = require("../resources/upload");
-var picture = require("../resources/picture");
-
 module.exports = function(app) {
+    var archive = app.resources.upload;
+    var picture = app.resources.picture;
+
     app.route("/resources/upload")
         .post(archive.upload)
         .put(archive.upload);
