@@ -1,9 +1,9 @@
-angular.module("PublicResource", ["ngResource"])
+angular.module("PublicResource", ["ngResource","ngFileUpload"])
     .factory("pictureService", function($resource) {
         return $resource("/resources/picture/:_id", null, {
                 insert : {
                     method : "POST",
-                    transformResponse: function(data){
+                    transformResponse: function(data) {
                         var picture = {};
 
                         picture = JSON.parse(data);
@@ -19,27 +19,51 @@ angular.module("PublicResource", ["ngResource"])
     .factory("maintainPicture", function($q, pictureService, $rootScope) {
         var service = {};
 
-         service.maintain = function(picture) {
-             return $q(function(resolve, reject) {
-                 $rootScope.$broadcast("pictureSubmitted");
+        service.save = function(archive, picture) {
+            return $q(function(resolve, reject) {
+                $rootScope.$broadcast("pictureSubmitted");
 
-                 if (picture._id) {
-                     pictureService.update({_id: picture._id}, picture, function() {
-                         resolve({picture : picture,
-                                  message : "Picture " + picture.name + " Updated!"});
-                     }, function(erro) {
-                         reject({message : erro});
-                     });
-                 } else {
-                     pictureService.insert(picture, function(data) {
-                         resolve({picture : data,
-                                  message : "Picture " + picture.name + " Added!"});
-                     }, function(erro) {
-                         reject({message : erro});
-                     });
-                 }
-             });
-         };
+                if (picture._id) {
+                    pictureService.update({_id: picture._id}, picture, function() {
+                        resolve({picture : picture,
+                                 method : "UPDATE",
+                                 message : "Picture " + picture.file + " Was Updated!"});
+                    }, function(erro) {
+                        reject({message : erro});
+                    });
+                } else {
+                    pictureService.insert(picture, function(data) {
+                        resolve({picture : data,
+                                 method : "INSERT",
+                                 message : "Picture " + picture.file + " Was Added!"});
+                    }, function(erro) {
+                        reject({message : erro});
+                    });
+                }
+            });
+        };
 
-         return service;
+        return service;
+    })
+    .factory("archiveUpload", function($q, Upload) {
+        var service = {};
+
+        service.save = function(archive, picture) {
+            return $q(function(resolve, reject) {
+                if (archive.upload) {
+                    Upload.rename(archive.upload, picture._id + "." + archive.upload.name.split(".").pop());
+
+                    Upload.upload({
+                        url : "/resources/upload",
+                        data : {file : archive.upload}
+                    }).success(function () {
+                        resolve({message : archive.upload.name + " Was Uploaded!"});
+                    }).error(function(erro) {
+                        reject({message : erro});;
+                    });
+                }
+            });
+        };
+
+        return service;
     });
